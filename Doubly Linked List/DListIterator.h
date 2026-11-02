@@ -25,8 +25,62 @@ public:
 	bool isStart();
 
 	// Add the dereference, increment and decrement operators
-};
+	T& operator*();
+	DListIterator<T> operator++();
+	DListIterator<T> operator++(int u);
+	DListIterator<T> operator--();
+	DListIterator<T> operator--(int u);
 
+};
+template <class T>
+T& DListIterator<T>::operator*()
+{
+	return this->currentNode->data;
+}
+template <class T>
+DListIterator<T> DListIterator<T>::operator++()
+{
+	if (currentNode == nullptr)
+	{
+		return *this;
+	}
+	currentNode = currentNode->next;
+	return *this;
+}
+template <class T>
+DListIterator<T> DListIterator<T>::operator++(int u)
+{
+	if (currentNode == nullptr)
+	{
+		return *this;
+	}
+	DListIterator<T> temp(*this);
+	this->currentNode = currentNode->next;
+	return temp;
+
+
+}
+template <class T>
+DListIterator<T> DListIterator<T>::operator--()
+{
+	if (currentNode == nullptr)
+	{
+		return *this;
+	}
+	currentNode = currentNode->previous;
+	return *this;
+}
+template <class T>
+DListIterator<T> DListIterator<T>::operator--(int u)
+{
+	if (currentNode == nullptr)
+	{
+		return *this;
+	}
+	DListIterator<T> temp(*this);
+	this->currentNode = currentNode->previous;
+	return temp;
+}
 template <class T>
 DListIterator<T>::DListIterator(DList<T> *l, DListNode<T> *n)
 {
