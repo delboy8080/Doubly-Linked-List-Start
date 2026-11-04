@@ -52,25 +52,80 @@ DList<T>::DList()
 template <class T>
 void DList<T>::append(T item)
 {
-	
+	if (head == nullptr)
+	{
+		head = tail = new DListNode<T>(item);
+		count++;
+		return;
+	}
+	else
+	{
+		tail->insertAfter(item);
+		tail = tail->next;
+		count++;
+	}
 }
 
 template <class T>
 void DList<T>::prepend(T item)
 {
-	
+	if (head == nullptr)
+	{
+		head = tail = new DListNode<T>(item);
+		count++;
+		return;
+	}
+	else
+	{
+		head->insertBefore(item);
+		head = head->previous;
+		count++;
+	}
 }
 
 template <class T>
 void DList<T>::removeHead()
 {
-	
+	if (head == nullptr)
+	{
+		return;
+	}
+	if (head == tail)
+	{
+		delete head;
+		head = tail = nullptr;
+		count--;
+	}
+	else
+	{
+		DListNode<T>* temp = head;
+		head = head->next;
+		delete temp;
+		head->previous = nullptr;
+		count--;
+	}
 }
 
 template <class T>
 void DList<T>::removeTail()
 {
-	
+	if (head == nullptr)
+	{
+		return;
+	}
+	if (head == tail)
+	{
+		delete tail;
+		head = tail = nullptr;
+		count--;
+	}
+	else
+	{
+		tail = tail->previous;
+		delete tail->next;
+		tail->next = nullptr;
+		count--;
+	}
 }
 template <class T>
 DListIterator<T> DList<T>::getIterator()
@@ -80,13 +135,56 @@ DListIterator<T> DList<T>::getIterator()
 template <class T>
 void DList<T>::insert(DListIterator<T> &iter, T item)
 {
-	
+	if (iter.list != this)
+	{
+		return;
+	}
+	if (iter.currentNode == nullptr)
+	{
+		append(item);
+		return;
+	}
+	else
+	{
+		iter.currentNode->insertBefore(item);
+		if (iter.currentNode == head)
+		{
+			head = head->previous;
+		}
+		count++;
+		return;
+	}
 }
 
 template <class T>
 DListIterator<T> DList<T>::remove(DListIterator<T> &iter)
 {
-	
+	if (iter.list != this || head == nullptr || iter.currentNode == nullptr)
+	{
+		return iter;
+	}
+	if (iter.currentNode == head)
+	{
+		removeHead();
+		return getIterator();
+	}
+	else
+	{
+		DListNode<T>* prev = iter.currentNode->previous;
+		if (iter.currentNode == tail)
+		{
+			tail = prev;
+		}
+
+		prev->next = iter.currentNode->next;
+		if (prev->next != nullptr)
+		{
+			prev->next->previous = prev;
+		}
+		delete iter.currentNode;
+		count--;
+		return DListIterator<T>(this, prev->next);
+	}
 	return iter;
 }
 
