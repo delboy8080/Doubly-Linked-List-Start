@@ -52,25 +52,79 @@ DList<T>::DList()
 template <class T>
 void DList<T>::append(T item)
 {
-	
+	if (head == nullptr)
+	{
+		head = tail = new DListNode<T>(item);
+	}
+	else
+	{
+		tail->insertAfter(item);
+		tail = tail->next;
+		
+	}
+	count++;
 }
 
 template <class T>
 void DList<T>::prepend(T item)
 {
-	
+	if (head == nullptr)
+	{
+		head = tail = new DListNode<T>(item);
+	}
+	else
+	{
+		head->insertBefore(item);
+		head = head->previous;
+
+	}
+	count++;
 }
 
 template <class T>
 void DList<T>::removeHead()
 {
-	
+	if (head == nullptr)
+	{
+		return;
+	}
+	else if (head == tail)
+	{
+		delete head;
+		head = tail = nullptr;
+		count--;
+	}
+	else
+	{
+		DListNode<T>* temp = head;
+		head = head->next;
+		head->previous = nullptr;
+		delete temp;
+		count--;
+	}
 }
 
 template <class T>
 void DList<T>::removeTail()
 {
-	
+	if (head == nullptr)
+	{
+		return;
+	}
+	else if (head == tail)
+	{
+		delete head;
+		head = tail = nullptr;
+		count--;
+	}
+	else
+	{
+		DListNode<T>* temp = tail;
+		tail = tail->previous;
+		tail->next = nullptr;
+		delete temp;
+		count--;
+	}
 }
 template <class T>
 DListIterator<T> DList<T>::getIterator()
