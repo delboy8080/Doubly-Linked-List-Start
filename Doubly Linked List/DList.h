@@ -134,13 +134,54 @@ DListIterator<T> DList<T>::getIterator()
 template <class T>
 void DList<T>::insert(DListIterator<T> &iter, T item)
 {
-	
+	if (iter.list != this)
+	{
+		return;
+	}
+	else if (iter.isValid() == false)
+	{
+		append(item);
+	}
+	else
+	{
+		iter.currentNode->insertBefore(item);
+		if (iter.currentNode == head)
+		{
+			head = head->previous;
+		}
+		count++;
+	}
 }
 
 template <class T>
 DListIterator<T> DList<T>::remove(DListIterator<T> &iter)
 {
-	
+	if (iter.list != this || iter.currentNode == nullptr || head == nullptr)
+	{
+		return iter;
+	}
+	else if (iter.currentNode == head)
+	{
+		removeHead();
+		return DListIterator<T>(this, head);
+	}
+	else
+	{
+		DListNode<T>* prev = iter.currentNode->previous;
+		prev->next = iter.currentNode->next;
+		if (iter.currentNode->next != nullptr)
+		{
+			iter.currentNode->next->previous = prev;
+		}
+		if (iter.currentNode == tail)
+		{
+			tail = prev;
+		}
+		delete iter.currentNode;
+		count--;
+		return DListIterator<T>(this, prev->next);
+	}
+
 	return iter;
 }
 
