@@ -21,10 +21,11 @@ void print(DList<T>& list)
 void question1();
 void question2();
 void question3();
+void question4();
 
 int main()
 {
-    question3();
+    question4();
     return 0;
 }
 template <class T>
@@ -137,4 +138,37 @@ void question3()
     print(A);
     print(B);
     print(M);
+}
+
+template <class T>
+bool isPalindrome(DList<T>& lst)
+{
+    DListIterator<T>st, en;
+    st = lst.getIterator();
+    en = lst.getIterator();
+    en.end();
+    while (st.isValid() && en.isValid())
+    {
+        if (*st != *en)
+            return false;
+        st++;
+        en--;
+    }
+    return true;
+}
+
+void question4()
+{
+    string words[] = { "navan", "derek", "naan" };
+    for (int i = 0; i < 3;i++)
+    {
+        DList<char> items;
+        for (int x = 0; x < words[i].size();x++)
+        {
+            items.append(words[i][x]);
+        }
+
+        print(items);
+        cout << (isPalindrome(items) ? "Yes" : "No") << endl;
+    }
 }
