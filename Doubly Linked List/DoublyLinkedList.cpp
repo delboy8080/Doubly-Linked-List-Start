@@ -142,3 +142,29 @@ void question3()
     print(merged);
 
 }
+template<class T>
+bool isPalindrome(DList<T>& lst)
+{
+    DListIterator<T> st = lst.getIterator();
+    DListIterator<T> en = lst.getIterator();
+    en.end();
+    while (st.isValid() && en.isValid && *en == *st)
+    {
+        en--;
+        st++;
+    }
+    return !st.isValid() && !en.isValid();
+}
+void question4()
+{
+    string words[] = { "navan", "derek", "asdffdsa" };
+    for (int i = 0; i < 3;i++)
+    {
+        DList<char> word;
+        for (int x = 0; x < words[i].length();x++)
+        {
+            word.append(words[i][x]);
+        }
+        cout << words[i] << ": " << (isPalindrome(word) ? "yes" : "No") << endl;
+    }
+}
